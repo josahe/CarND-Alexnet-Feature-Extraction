@@ -50,9 +50,11 @@ def eval_on_data(X, y, sess):
         loss, acc = sess.run([loss_op, accuracy_op], feed_dict={features: X_batch, labels: y_batch})
         total_loss += (loss * X_batch.shape[0])
         total_acc += (acc * X_batch.shape[0])
+        break
 
     return total_loss/X.shape[0], total_acc/X.shape[0]
 
+print('Training..')
 with tf.Session() as sess:
     sess.run(init_op)
 
@@ -63,6 +65,7 @@ with tf.Session() as sess:
         for offset in range(0, X_train.shape[0], batch_size):
             end = offset + batch_size
             sess.run(train_op, feed_dict={features: X_train[offset:end], labels: y_train[offset:end]})
+            break
 
         val_loss, val_acc = eval_on_data(X_val, y_val, sess)
         print("Epoch", i+1)
@@ -70,3 +73,4 @@ with tf.Session() as sess:
         print("Validation Loss =", val_loss)
         print("Validation Accuracy =", val_acc)
         print("")
+        break
